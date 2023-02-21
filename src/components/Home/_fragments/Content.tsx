@@ -1,4 +1,13 @@
-import { Box, Container, Text, Flex, Input, Button } from "@chakra-ui/react";
+import Pagination from "@/element/Pagination/Pagination";
+import {
+  Box,
+  Container,
+  Text,
+  Flex,
+  Input,
+  Button,
+  useBreakpoint,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { use, useEffect, useState } from "react";
 import { CONTENT_HEAD } from "./info.data";
@@ -17,11 +26,19 @@ function Content() {
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
   const [realEstateData, setRealEstateData] = useState<RealEstateType[]>([]);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [totalDatas, setTotalDatas] = useState(0);
+  const offSet = (page - 1) * limit;
 
+  const totalPages = Math.ceil(totalDatas / limit);
+
+  const breakpoint = useBreakpoint();
   const inputDate = (e: any) => {
     setDate(e.target.value);
   };
   const searchResult = async () => {
+    setPage(1);
     console.log(date.length);
     let regex = /[0-9]/g;
     if (!regex.test(date)) {
@@ -43,9 +60,10 @@ function Content() {
     const resultData = JSON.parse(result.data)?.response?.body?.items?.item;
     const arr = [];
     console.log(resultData);
+    setTotalDatas(resultData.length);
     for (let i = 0; i < resultData.length; i++) {
       arr.push({
-        id: i,
+        id: i + 1,
         dong: resultData[i]["법정동"],
         county: resultData[i]["시군구"],
         year: resultData[i]["년"],
@@ -53,8 +71,6 @@ function Content() {
         amount: resultData[i]["거래금액"],
         constructYear: resultData[i]["건축년도"],
       });
-
-      // console.log(resultData[i]);
     }
     console.log(arr);
     setRealEstateData(arr);
@@ -65,7 +81,11 @@ function Content() {
   return (
     <Box mb={"10px"} mt={"80px"}>
       <Container maxW={"1000px"}>
-        <Flex m={"auto"} align={"center"} w={"50%"}>
+        <Flex
+          m={"auto"}
+          align={"center"}
+          w={{ lg: "50%", base: "100%", sm: "100%" }}
+        >
           <Text w={"50%"} mx={2} fontFamily={"Manrope"} fontSize={"15px"}>
             {"부동산 매매 신고 자료"}
           </Text>
@@ -102,13 +122,7 @@ function Content() {
           </Button>
         </Flex>
 
-        <Box
-          mt={5}
-          maxH={"1600px"}
-          minH={"600px"}
-          // borderRadius={"10px"}
-          // border={"1px solid gray"}
-        >
+        <Box mt={5} maxH={"1600px"} minH={"600px"}>
           <Flex
             fontFamily={"Manrope"}
             align={"center"}
@@ -117,24 +131,50 @@ function Content() {
             justify={"center"}
           >
             {CONTENT_HEAD.map((item) => (
-              <Text textAlign={"center"} w={"15%"} key={item.id}>
+              <Text
+                textAlign={"center"}
+                w={item.id === 0 ? "10%" : "15%"}
+                key={item.id}
+              >
                 {item.name}
               </Text>
             ))}
           </Flex>
           <Box
-            w={"90%"}
+            w={"100%"}
             opacity={"50%"}
             border={"0.5px solid gray"}
             m={"auto"}
           />
-          <Box border={"1px solid black"} w={"90%"} m={"auto"}>
-            {realEstateData.map((item) => (
+          <Box w={"100%"} m={"auto"} mt={2}>
+            {/* {realEstateData.map((item) => ( */}
+            {realEstateData.slice(offSet, offSet + limit).map((item) => (
               <>
-                1<Flex key={item?.id}>{item?.amount}</Flex>
+                <Flex
+                  mt={5}
+                  justify={"center"}
+                  key={item?.id}
+                  textAlign={"center"}
+                  fontFamily={"monospace"}
+                  fontSize={{ base: "12px", sm: "15px", md: "18px" }}
+                  border={"0.5px solid gray"}
+                  align={"center"}
+                  borderRadius={"15px"}
+                >
+                  <Text w={"10%"}>{item?.id}</Text>
+                  <Text w={"15%"}>{item.county}</Text>
+                  <Text w={"15%"}>{item.dong}</Text>
+                  <Text w={"15%"}>{item.amount}</Text>
+                  <Text w={"15%"}>{item.width}</Text>
+                  <Text w={"15%"}>
+                    {item.constructYear ? item.constructYear : "N/A"}
+                  </Text>
+                  <Text w={"15%"}>{item.year}</Text>
+                </Flex>
               </>
             ))}
           </Box>
+          <Pagination totalPages={totalPages} page={page} setPage={setPage} />
         </Box>
       </Container>
     </Box>

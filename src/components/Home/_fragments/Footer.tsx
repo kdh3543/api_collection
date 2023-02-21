@@ -1,9 +1,11 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 function Footer() {
   return (
-    <Box bgColor={"gray.100"} pos={"relative"} w={"100%"} h={"100px"}>
-      footer
+    <Box position={"fixed"} bottom={0} bgColor={"gray.100"} w={"100%"}>
+      <Text fontSize={"15px"} mt={2} pl={2} mb={"100px"}>
+        {"REAL_ESTATE"}
+      </Text>
     </Box>
   );
 }

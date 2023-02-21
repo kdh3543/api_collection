@@ -5,15 +5,19 @@ function Head() {
   return (
     <>
       <Flex
-        bgColor={"green.400"}
+        bgColor={"gray.400"}
         w={"100%"}
         h={"60px"}
         pos={"fixed"}
         top={0}
         align={"center"}
+        zIndex={3}
       >
         <Flex justify={"center"}>
           <Image w={"80px"} src={IMAGES.ICON.REAL_ESTATE} alt={"real_estate"} />
+        </Flex>
+        <Flex ml={"auto"} mr={5}>
+          <Text fontWeight={"bold"}>{"매매 신고"}</Text>
         </Flex>
       </Flex>
     </>
