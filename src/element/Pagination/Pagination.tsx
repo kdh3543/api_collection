@@ -1,8 +1,9 @@
 import { Button, Flex } from "@chakra-ui/react";
 
-function Pagination({ totalPages, page, setPage }: any) {
+function Pagination({ totalDatas, totalPages, page, setPage }: any) {
+  console.log("tpage: ", totalPages, page, totalDatas);
   return (
-    <Flex mt={10} w={"100%"} justify={"center"} align={"center"}>
+    <Flex mb={10} mt={10} w={"100%"} justify={"center"} align={"center"}>
       <Button
         fontWeight={"extrabold"}
         colorScheme={"linkedin"}
@@ -19,7 +20,7 @@ function Pagination({ totalPages, page, setPage }: any) {
           mx={1}
           fontWeight={"extrabold"}
           fontFamily={"Manrope"}
-          fontSize={"16px"}
+          fontSize={page === i + 1 ? "20px" : "15px"}
           bgColor={"transparent"}
           borderRadius={"50%"}
           size={"sm"}
@@ -30,14 +31,13 @@ function Pagination({ totalPages, page, setPage }: any) {
           {i + 1}
         </Button>
       ))}
-
       <Button
         fontWeight={"extrabold"}
         colorScheme={"linkedin"}
         size={"sm"}
         mx={2}
         onClick={() => setPage(page + 1)}
-        isDisabled={page === totalPages}
+        isDisabled={page === totalPages || totalDatas === 0 || !totalDatas}
       >
         &gt;
       </Button>

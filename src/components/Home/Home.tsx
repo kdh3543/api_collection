@@ -6,7 +6,7 @@ import Head from "./_fragments/Head";
 function Home() {
   return (
     <>
-      <Box w={"100%"} h={"100%"} minH={"800px"}>
+      <Box pos={"relative"} w={"100%"} h={"100%"} minH={"950px"}>
         <Head />
         <Content />
         <Footer />

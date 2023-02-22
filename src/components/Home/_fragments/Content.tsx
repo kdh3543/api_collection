@@ -25,6 +25,7 @@ interface RealEstateType {
 function Content() {
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
+  const [dataState, setDataState] = useState(false);
   const [realEstateData, setRealEstateData] = useState<RealEstateType[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -39,12 +40,10 @@ function Content() {
   };
   const searchResult = async () => {
     setPage(1);
-    console.log(date.length);
-    let regex = /[0-9]/g;
+    let regex = /^[0-9]*$/;
     if (!regex.test(date)) {
       setError("숫자만 입력해주세요.");
       setDate("");
-      console.log(error);
       return false;
     } else if (date.length !== 6) {
       setDate("");
@@ -57,11 +56,15 @@ function Content() {
       method: "GET",
       url: `https://mim2p1cj40.execute-api.ap-northeast-1.amazonaws.com/realEstate/real_estate?date=${date}`,
     });
-    const resultData = JSON.parse(result.data)?.response?.body?.items?.item;
-    const arr = [];
+    const resultData = JSON.parse(result?.data)?.response?.body?.items?.item;
     console.log(resultData);
-    setTotalDatas(resultData.length);
-    for (let i = 0; i < resultData.length; i++) {
+    if (resultData?.length === 0) {
+      setDataState(true);
+      return false;
+    }
+    const arr = [];
+    setTotalDatas(resultData?.length);
+    for (let i = 0; i < resultData?.length; i++) {
       arr.push({
         id: i + 1,
         dong: resultData[i]["법정동"],
@@ -79,7 +82,7 @@ function Content() {
     console.log(realEstateData);
   }, [realEstateData]);
   return (
-    <Box mb={"10px"} mt={"80px"}>
+    <Box mb={"50px"} mt={10}>
       <Container maxW={"1000px"}>
         <Flex
           m={"auto"}
@@ -135,6 +138,7 @@ function Content() {
                 textAlign={"center"}
                 w={item.id === 0 ? "10%" : "15%"}
                 key={item.id}
+                fontSize={{ base: "12px", lg: "16px", sm: "12px" }}
               >
                 {item.name}
               </Text>
@@ -174,7 +178,13 @@ function Content() {
               </>
             ))}
           </Box>
-          <Pagination totalPages={totalPages} page={page} setPage={setPage} />
+
+          <Pagination
+            totalDatas={totalDatas}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+          />
         </Box>
       </Container>
     </Box>

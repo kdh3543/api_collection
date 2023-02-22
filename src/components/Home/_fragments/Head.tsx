@@ -8,7 +8,6 @@ function Head() {
         bgColor={"gray.400"}
         w={"100%"}
         h={"60px"}
-        pos={"fixed"}
         top={0}
         align={"center"}
         zIndex={3}
