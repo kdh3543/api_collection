@@ -1,4 +1,7 @@
-## 공공 데이터 api를 AWS Lambda 함수와 AWS API Gateway를 이용해서 올린 뒤 Next.js에서 통신하는 기능 구현
+## api를 AWS Lambda 함수와 AWS API Gateway를 이용해서 올린 뒤 Next.js에서 통신하는 기능 구현
+
+### link https://real-estate-api-eight.vercel.app/
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
